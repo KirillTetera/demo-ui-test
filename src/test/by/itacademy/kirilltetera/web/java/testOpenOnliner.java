@@ -6,6 +6,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class testOpenOnliner {
     @Test
@@ -44,6 +48,25 @@ public class testOpenOnliner {
         Assert.assertEquals("Укажите ник или e-mail", warningMessageEmptyNickOrEmail.getText());
         WebElement warningMessageEmptyPassword = driver.findElement
                 (By.xpath(onlinerPage.warningMessageEmptyPassword));
+        Assert.assertEquals("Укажите пароль", warningMessageEmptyPassword.getText());
+        driver.quit();
+    }
+    @Test
+    public void testOnlinerLoginFormWithEmptyPassword(){
+        WebDriver driver = new ChromeDriver();
+        driver.navigate().to(onlinerPage.url);
+        WebElement buttonEntrance = driver.findElement
+                (By.xpath(onlinerPage.buttonEntrance));
+        buttonEntrance.click();
+        WebElement inputNickOrEmail = driver.findElement
+                (By.xpath(onlinerPage.inputNickOrEmail));
+        inputNickOrEmail.sendKeys("test@gmail.com");
+        WebElement buttonEnter = driver.findElement
+                (By.xpath(onlinerPage.buttonEnter));
+        buttonEnter.click();
+        WebElement warningMessageEmptyPassword = new WebDriverWait(driver, Duration.ofSeconds(1))
+                .until(ExpectedConditions
+                        .visibilityOfElementLocated(By.xpath(onlinerPage.warningMessageEmptyPassword)));
         Assert.assertEquals("Укажите пароль", warningMessageEmptyPassword.getText());
         driver.quit();
     }
